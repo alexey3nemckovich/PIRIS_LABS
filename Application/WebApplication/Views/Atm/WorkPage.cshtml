@@ -1,0 +1,60 @@
+﻿@model WebApplication.Models.ViewModels.AtmAccountModel
+
+@{
+    ViewBag.Title = "WorkPage";
+}
+
+<h2>WorkPage</h2>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Balance</h2>
+        <h4>@(Model.Amount)</h4>
+    </div>
+    <div class="col-md-4">
+        <h2>Withdraw money</h2>
+        @using (Html.BeginForm("WithdrawMoney", "Atm"))
+        {
+            @Html.Hidden("creditId", Model.CreditId)
+            <div class="form-group">
+                @Html.Label("Amount", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.Editor("amount", new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessage("amount", "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Withdraw" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-4">
+        <h2>Transfer money</h2>
+        @using (Html.BeginForm("WithdrawMoney", "Atm"))
+        {
+            @Html.Hidden("creditId", Model.CreditId)
+            <div class="form-group">
+                @Html.Label("Account number", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.Editor("accountNumber", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessage("accountNumber", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Amount", htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.Editor("amount", new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessage("amount", "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Transfer" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

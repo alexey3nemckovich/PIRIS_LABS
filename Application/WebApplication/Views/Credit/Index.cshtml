@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebApplication.Models.ViewModels.Credit>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create") | @Html.ActionLink("Go to credit plans page", "Index", "PlanOfCredit")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PlanOfCredit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Client)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        string style = item.Amount == 0 ? "grey" : "";
+        <tr style="background-color:@style">
+            <td>
+                @Html.DisplayFor(modelItem => item.PlanOfCredit.Name)
+            </td>
+            <td>
+                @Html.ActionLink($"{item.Client.Surname} {item.Client.Name} {item.Client.FatherName}", "Details", "Client", new {id = item.Client.Id}, new {})
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new {creditId = item.Id})
+            </td>
+        </tr>
+    }
+
+</table>
+    

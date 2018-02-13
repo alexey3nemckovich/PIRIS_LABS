@@ -1,0 +1,34 @@
+﻿@model WebApplication.Models.ViewModels.PlanOfPayment
+
+@{
+    ViewBag.Title = "Schedule";
+}
+
+<h2>Schedule</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @("Payment day")
+        </th>
+        <th>
+            @("Payment amount")
+        </th>
+    </tr>
+
+    @foreach (var item in Model.PaymentSchedule)
+    {
+        string style = item.Key < Model.CurrentDay ? "Green" : "FireBrick";
+        <tr  style="background-color:@style">
+            <td>
+                @Html.DisplayFor(modelItem => item.Key)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Back to credit details", "Details", new { creditId = Model.CreditId })
+</p>

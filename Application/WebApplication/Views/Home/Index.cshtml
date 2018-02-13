@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Super bank</h1>
+    <p class="lead">Super bank is perfect bank.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Deposits</h2>
+        <p>
+            <a class="btn btn-default" href="@Url.Action("Index", "Deposit")">Go to deposits page &raquo;</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Credits</h2>
+        <p>
+            <a class="btn btn-default" href="@Url.Action("Index", "Credit")">Go to credits page &raquo;</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Bank</h2>
+        <p>
+            <a class="btn btn-default" href="@Url.Action("Index", "Bank")">Go to bank page &raquo;</a>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Clients</h2>
+        <p>
+            <a class="btn btn-default" href="@Url.Action("Index", "Client")">Go to clients page &raquo;</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>ATM</h2>
+        <p>
+            <a class="btn btn-default" href="@Url.Action("Index", "ATM")">Go to ATM page &raquo;</a>
+        </p>
+    </div>
+</div>

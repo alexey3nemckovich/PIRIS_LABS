@@ -1,0 +1,112 @@
+﻿@model WebApplication.Models.ViewModels.Credit
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Credit</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PlanOfCredit)
+        </dt>
+
+        <dd>
+            @($"{Model.PlanOfCredit.Name}")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Client)
+        </dt>
+
+        <dd>
+            @Html.ActionLink($"{Model.Client.Surname} {Model.Client.Name} {Model.Client.FatherName}", "Details", "Client", new { }, new { id = Model.ClientId })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @($"{Model.StartDate.Date:dd.MM.yyyy}")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @($"{Model.EndDate.Date:dd.MM.yyyy}")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentPercentAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentPercentAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardPin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardPin)
+        </dd>
+
+        <dt>
+            @("Payment Schedule")
+        </dt>
+
+        <dd>
+            @Html.ActionLink("Go to the schedule page", "PaymentSchedule", new { creditId = Model.Id })
+        </dd>
+    </dl>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-6">
+            @if (Model.IsCanCloseToday)
+            {
+                using (Html.BeginForm("CloseCredit", "Credit", new { creditId = Model.Id }, FormMethod.Post))
+                {
+                    <button class="btn btn-default" type="submit">Close deposit</button>
+                }
+            }
+        </div>
+        <div class="col-md-6">
+            @if (Model.IsCanPayPercentToday)
+            {
+                using (Html.BeginForm("PayPercents", "Credit", new { creditId = Model.Id }, FormMethod.Post))
+                {
+                    <button class="btn btn-default" type="submit">Take percents</button>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,1 @@
+SELECT * FROM Client JOIN Citizenship ON Citizenship.Id=Client.CitezenshipId JOIN Disability ON Disability.Id=Client.DisabilityId JOIN MartialStatus ON Client.MaritalStatusId=MartialStatus.Id JOIN Town ON Client.ResidenceActualPlaceId=Town.Id ORDER BY Surname
