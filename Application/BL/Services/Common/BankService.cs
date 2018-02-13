@@ -28,7 +28,7 @@ namespace BL.Services.Common
         public ITransactionService TransactionService { get; set; }
 
         [Dependency]
-        public ICommonService CommonService { get; set; }
+        public ISystemInformationService SystemInformationService { get; set; }
 
         public BankService() : base()
         {
@@ -38,7 +38,7 @@ namespace BL.Services.Common
         {
             DepositService.CloseBankDay();
             CreditService.CloseBankDay();
-            CommonService.IncreaseCurrentBankDay();
+            SystemInformationService.IncreaseCurrentBankDay();
         }
 
         public AccountReportModel GenerateAccountReport()
@@ -70,7 +70,7 @@ namespace BL.Services.Common
 
         public void CloseBankMonth()
         {
-            for (int i = 0; i < CommonService.MonthLength; i++)
+            for (int i = 0; i < SystemInformationService.CountDaysInMonth; i++)
             {
                 CloseBankDayWork();
             }
@@ -79,7 +79,7 @@ namespace BL.Services.Common
 
         public void CloseBankYear()
         {
-            for (int i = 0; i < CommonService.YearLength; i++)
+            for (int i = 0; i < SystemInformationService.CountDaysInYear; i++)
             {
                 CloseBankDayWork();
             }

@@ -15,9 +15,11 @@ namespace ORMLibrary
 
         public int PlanId { get; set; }
 
-        public int StartDate { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime StartDate { get; set; }
 
-        public int EndDate { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime EndDate { get; set; }
 
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }

@@ -22,7 +22,7 @@ namespace ORMLibrary
         public virtual DbSet<PlanOfAccount> PlanOfAccounts { get; set; }
         public virtual DbSet<PlanOfCredit> PlanOfCredits { get; set; }
         public virtual DbSet<PlanOfDeposit> PlanOfDeposits { get; set; }
-        public virtual DbSet<SystemVariable> SystemVariables { get; set; }
+        public virtual DbSet<SystemInformation> SystemInformations { get; set; }
         public virtual DbSet<Town> Towns { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
 
@@ -99,7 +99,7 @@ namespace ORMLibrary
                 .IsUnicode(false);
 
             modelBuilder.Entity<Client>()
-                .Property(e => e.FatherName)
+                .Property(e => e.Patronymic)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Client>()

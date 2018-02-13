@@ -21,7 +21,7 @@ namespace WebApplication.Controllers
         public IPlanOfCreditService PlanOfCreditService { get; set; }
 
         [Dependency]
-        public ICommonService CommonService { get; set; }
+        public ISystemInformationService SystemInformationService { get; set; }
 
         [Dependency]
         public IClientService ClientService { get; set; }
@@ -31,7 +31,7 @@ namespace WebApplication.Controllers
         public ActionResult Index()
         {
             var credits = CreditService.GetAll();
-            return View(credits.Select(e => e.ToCredit(CommonService)));
+            return View(credits.Select(e => e.ToCredit(SystemInformationService)));
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace WebApplication.Controllers
         public ActionResult Details(int creditId)
         {
             var credit = CreditService.Get(creditId);
-            return View(credit.ToCredit(CommonService));
+            return View(credit.ToCredit(SystemInformationService));
         }
 
         [HttpGet]

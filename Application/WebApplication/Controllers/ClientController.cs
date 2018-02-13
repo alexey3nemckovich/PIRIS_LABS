@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using WebApplication.Models.ViewModels;
 using BL.Services.Client;
-using BL.Services.Client.Models;
 using Microsoft.Practices.Unity;
 using WebApplication.Infrastructure;
 using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
@@ -89,7 +87,7 @@ namespace WebApplication.Controllers
                     ModelState.AddModelError("", ex.Message);
                     return View(Mapper.Map<Client, Client>(client));
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
                     return View("Error");
                 }

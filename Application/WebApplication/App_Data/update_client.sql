@@ -1,4 +1,4 @@
-UPDATE Client SET Surname = 'Surname',Name='Name',FatherName = 'FatherName',BirthDate = 'BirthDate',Male = 'Male',
+UPDATE Client SET Surname = 'Surname',Name='Name',Patronymic = 'Patronymic',BirthDate = 'BirthDate',Male = 'Male',
 	PassportSeries = 'PassportSeries',PassportNumber =  'PassportNumber',IssuedBy =  'Issued',
 	IssueDate = 'IssuedDate',IdentificationNumber =  'IdNumber',BirthDate =  'BirthPlace',
 	ResidenceActualPlaceId = 'ResidentialPlace',ResidenceActualAddress =  'Address',HomePhoneNumber = 'HomeNumber',

@@ -24,14 +24,14 @@ namespace WebApplication.Controllers
         public IClientService ClientService { get; set; }
 
         [Dependency]
-        public ICommonService CommonService { get; set; }
+        public ISystemInformationService SystemInformationService { get; set; }
 
         public IMapper Mapper { get; set; } = MappingRegistrar.CreareMapper();
 
         public ActionResult Index()
         {
             var deposits = DepositService.GetAll();
-            return View(deposits.Select(e => e.ToDeposit(CommonService)));
+            return View(deposits.Select(e => e.ToDeposit(SystemInformationService)));
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace WebApplication.Controllers
         public ActionResult Details(int depositId)
         {
             var deposit = DepositService.Get(depositId);
-            return View(deposit.ToDeposit(CommonService));
+            return View(deposit.ToDeposit(SystemInformationService));
         }
 
         [HttpPost]

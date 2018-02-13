@@ -11,7 +11,7 @@ namespace BL.Services.Transaction.Models
     {
         public int Id { get; set; }
         public decimal Amount { get; set; }
-        public int TransactionDay { get; set; }
+        public DateTime TransactionDay { get; set; }
         public virtual AccountModel DebetAccount { get; set; }
         public virtual AccountModel CreditAccount { get; set; }
     }

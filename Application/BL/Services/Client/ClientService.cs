@@ -87,7 +87,7 @@ namespace BL.Services.Client
                 dbClient.Citizenship = Context.Citizenships.First(e => e.Id == client.Citizenship.Id);
                 Context.Entry(dbClient).State = EntityState.Modified;
             }
-            catch (ServiceException ex)
+            catch (ServiceException)
             {
                 throw;
             }

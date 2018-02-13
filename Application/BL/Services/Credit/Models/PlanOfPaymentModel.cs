@@ -10,6 +10,6 @@ namespace BL.Services.Credit.Models
     {
         public int CreditId { get; set; }
         public DateTime CurrentDay { get; set; }
-        public IDictionary<DateTime, decimal> PaymentSchedule { get; set; }
+        public IDictionary<DateTime, double> PaymentSchedule { get; set; }
     }
 }

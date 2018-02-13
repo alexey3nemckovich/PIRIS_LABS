@@ -28,7 +28,7 @@ namespace ORMLibrary
 
         [Required]
         [StringLength(50)]
-        public string FatherName { get; set; }
+        public string Patronymic { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime BirthDate { get; set; }

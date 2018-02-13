@@ -20,7 +20,7 @@ namespace WebApplication.Controllers
         public ITransactionService TransactionService { get; set; }
 
         [Dependency]
-        public ICommonService CommonService { get; set; }
+        public ISystemInformationService SystemInformationService { get; set; }
 
         public IMapper Mapper { get; set; } = MappingRegistrar.CreareMapper();
 
@@ -49,16 +49,18 @@ namespace WebApplication.Controllers
 
         public ActionResult DayTransactionsReport()
         {
-            var report = BankService.GenerateTransactionReport(CommonService.CurrentBankDay);
+            //var report = BankService.GenerateTransactionReport(SystemInformationService.CurrentBankDay);
+            BL.Services.Common.Model.TransactionReportModel report = new BL.Services.Common.Model.TransactionReportModel();
             return View("TransactionReport", report);
         }
 
         public ActionResult PreviousDayTransactionsReport()
         {
-            var report =
-                BankService.GenerateTransactionReport(CommonService.CurrentBankDay == 0
-                    ? 0
-                    : CommonService.CurrentBankDay - 1);
+            //var report =
+            //    BankService.GenerateTransactionReport(SystemInformationService.CurrentBankDay == 0
+            //        ? 0
+            //        : SystemInformationService.CurrentBankDay - 1);
+            BL.Services.Common.Model.TransactionReportModel report = new BL.Services.Common.Model.TransactionReportModel();
             return View("TransactionReport", report);
         }
 

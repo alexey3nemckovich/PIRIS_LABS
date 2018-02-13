@@ -38,7 +38,7 @@ namespace WebApplication.Controllers
                     if (credit != null)
                         return RedirectToAction("WorkPage", new {creditId = credit.Id});
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ModelState.AddModelError("", "Incorrect account number or pin code.");
                     return View(model);

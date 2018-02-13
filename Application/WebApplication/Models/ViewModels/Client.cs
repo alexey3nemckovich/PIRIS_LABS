@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace WebApplication.Models.ViewModels
@@ -21,8 +19,8 @@ namespace WebApplication.Models.ViewModels
         public string Surname { get; set; }
 
         [Required]
-        [RegularExpression(@"^[A-Za-zА-Яа-я]+$", ErrorMessage = "FatherName can consists only from Latin and Cirilic letters")]
-        public string FatherName { get; set; }
+        [RegularExpression(@"^[A-Za-zА-Яа-я]+$", ErrorMessage = "Patronymic can consists only from Latin and Cirilic letters")]
+        public string Patronymic { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

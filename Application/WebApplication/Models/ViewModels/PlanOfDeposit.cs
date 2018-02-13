@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace WebApplication.Models.ViewModels
 {
@@ -13,12 +9,12 @@ namespace WebApplication.Models.ViewModels
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [Display(Name = "Deposit plan name")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Period")]
-        public int BankDayPeriod { get; set; }
+        [Display(Name = "Time period(in monthes)")]
+        public int MonthesPeriod { get; set; }
 
         [Required]
         [Display(Name = "Percent a year")]

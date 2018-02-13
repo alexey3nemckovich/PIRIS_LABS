@@ -31,7 +31,7 @@
                 @Html.DisplayFor(modelItem => item.PlanOfCredit.Name)
             </td>
             <td>
-                @Html.ActionLink($"{item.Client.Surname} {item.Client.Name} {item.Client.FatherName}", "Details", "Client", new {id = item.Client.Id}, new {})
+                @Html.ActionLink($"{item.Client.Surname} {item.Client.Name} {item.Client.Patronymic}", "Details", "Client", new {id = item.Client.Id}, new {})
             </td>
 
             <td>

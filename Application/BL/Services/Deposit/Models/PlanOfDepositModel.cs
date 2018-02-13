@@ -13,7 +13,7 @@ namespace BL.Services.Deposit.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int BankDayPeriod { get; set; }
+        public int MonthPeriod { get; set; }
         public double Percent { get; set; }
         public bool Revocable { get; set; }
         public decimal? MinAmount { get; set; }

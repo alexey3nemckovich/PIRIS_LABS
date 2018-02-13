@@ -182,10 +182,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\db.mdf" />
-    <Content Include="App_Data\db_log.ldf">
-      <DependentUpon>db.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Data\delete_client.sql" />
     <Content Include="App_Data\drop_id.sql" />
     <Content Include="App_Data\init_db.sql" />

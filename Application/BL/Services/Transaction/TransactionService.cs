@@ -17,7 +17,7 @@ namespace BL.Services.Transaction
         [Dependency]
         public IAccountService AccountService { get; set; }
         [Dependency]
-        public ICommonService CommonService { get; set; }
+        public ISystemInformationService SystemInformationService { get; set; }
 
         public TransactionService() : base()
         {
@@ -77,7 +77,7 @@ namespace BL.Services.Transaction
                 DebetAccountId = debitAccount.Id,
                 CreditAccountId = creditAccount.Id,
                 Amount = amount,
-                TransactionDay = CommonService.CurrentBankDay
+                TransactionDay = SystemInformationService.CurrentBankDay
             };
 
             Context.Transactions.Add(trs);

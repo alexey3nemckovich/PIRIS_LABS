@@ -149,7 +149,7 @@ CREATE TABLE [Client]
 	[Id] int NOT NULL IDENTITY (1, 1),
 	[Surname] varchar(50) NOT NULL,
 	[Name] varchar(50) NOT NULL,
-	[FatherName] varchar(50) NOT NULL,
+	[Patronymic] varchar(50) NOT NULL,
 	[BirthDate] date NOT NULL,
 	[Male] bit NOT NULL,
 	[PassportSeries] varchar(2) NOT NULL,

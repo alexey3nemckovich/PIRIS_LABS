@@ -23,7 +23,7 @@ namespace BL.Services.Credit
         public IAccountService AccountService { get; set; }
 
         [Dependency]
-        public ICommonService CommonService { get; set; }
+        public ISystemInformationService SystemInformationService { get; set; }
 
         [Dependency]
         public ITransactionService TransactionService { get; set; }
@@ -35,14 +35,17 @@ namespace BL.Services.Credit
         public void Create(CreditModel credit, bool isCardNeeded)
         {
             if (credit.Amount == 0)
+            {
                 throw new ServiceException("Amount cannot be zero.");
+            }
 
             var dbCredit = Mapper.Map<CreditModel, ORMLibrary.Credit>(credit);
+
             dbCredit.PlanOfCredit = Context.PlanOfCredits.FirstOrDefault(e => e.Id == credit.PlanId);
             dbCredit.Client = Context.Clients.FirstOrDefault(e => e.Id == credit.ClientId);
             AccountService.CreateAccountsForCredit(dbCredit);
-            dbCredit.StartDate = CommonService.CurrentBankDay;
-            dbCredit.EndDate = dbCredit.StartDate + dbCredit.PlanOfCredit.BankDayPeriod;
+            dbCredit.StartDate = SystemInformationService.CurrentBankDay;
+            dbCredit.EndDate = dbCredit.StartDate.AddDays(dbCredit.PlanOfCredit.MonthesPeriod);
             dbCredit.Amount = credit.Amount;
 
             if (isCardNeeded)
@@ -85,34 +88,45 @@ namespace BL.Services.Credit
         public PlanOfPaymentModel GetPaymentSchedule(int creditId)
         {
             var credit = Context.Credits.FirstOrDefault(e => e.Id == creditId);
-            PlanOfPaymentModel result = new PlanOfPaymentModel();
-            result.CreditId = credit.Id;
-            result.CurrentDay = CommonService.StartDate +
-                                new TimeSpan(CommonService.CurrentBankDay, 0, 0, 0);
 
-            decimal allAmount = credit.Amount +
-                                credit.Amount*(credit.EndDate - credit.StartDate)*
-                                (decimal) credit.PlanOfCredit.Percent/100/CommonService.YearLength;
-            decimal montlyAmount = credit.PlanOfCredit.Anuity
-                ? allAmount/(credit.EndDate - credit.StartDate)*CommonService.MonthLength
-                : credit.Amount*CommonService.MonthLength*
-                  (decimal) credit.PlanOfCredit.Percent/100/CommonService.YearLength;
-            result.PaymentSchedule = new Dictionary<DateTime, decimal>();
-            decimal tempAmount = 0;
-            for (int i = credit.StartDate + CommonService.MonthLength;
-                i <= credit.EndDate;
-                i += CommonService.MonthLength)
+            PlanOfPaymentModel result = new PlanOfPaymentModel();
+
+            result.CreditId = credit.Id;
+            result.CurrentDay = SystemInformationService.CurrentBankDay;
+            result.PaymentSchedule = new Dictionary<DateTime, double>();
+
+            int countMonthes = (int)(credit.EndDate - credit.StartDate).TotalDays / SystemInformationService.CountDaysInMonth;
+            double percentPerMonth = credit.PlanOfCredit.Percent / SystemInformationService.CountDaysInYear;
+
+            if (credit.PlanOfCredit.Anuity)
             {
-                tempAmount += montlyAmount;
-                result.PaymentSchedule.Add(CommonService.StartDate + new TimeSpan(i, 0, 0, 0), montlyAmount);
-            }
-            DateTime endDate = CommonService.StartDate + new TimeSpan(credit.EndDate, 0, 0, 0);
-            if (result.PaymentSchedule.Keys.Contains(endDate))
-            {
-                result.PaymentSchedule[endDate] += allAmount - tempAmount;
+                double anuityCoefficient = 
+                    (percentPerMonth * Math.Pow(1 + percentPerMonth, countMonthes)) / 
+                    (Math.Pow(1 + percentPerMonth, countMonthes) - 1);
+
+                double paymentPerMonth = anuityCoefficient * (double)credit.Amount;
+
+                DateTime paymentDate = credit.StartDate.AddMonths(1);
+                for(int i = 0; i < countMonthes; i++)
+                {
+                    result.PaymentSchedule.Add(paymentDate, paymentPerMonth);
+                    paymentDate.AddMonths(1);
+                }
             }
             else
-                result.PaymentSchedule.Add(endDate, allAmount - tempAmount);
+            {
+                double creditRest = (double)credit.Amount;
+                double monthlyReturningCreditBodyPart = (double)credit.Amount / countMonthes;
+
+                DateTime paymentDate = credit.StartDate.AddMonths(1);
+                for (int i = 0; i < countMonthes; i++)
+                {
+                    double thisMonthPayment = monthlyReturningCreditBodyPart + creditRest * percentPerMonth;
+                    result.PaymentSchedule.Add(paymentDate, thisMonthPayment);
+                    creditRest -= monthlyReturningCreditBodyPart;
+                }
+            }
+
             return result;
         }
 
@@ -121,7 +135,7 @@ namespace BL.Services.Credit
             var credits =
                 Context.Credits.Where(
                     e =>
-                        e.StartDate <= CommonService.CurrentBankDay && e.EndDate >= CommonService.CurrentBankDay &&
+                        e.StartDate <= SystemInformationService.CurrentBankDay && e.EndDate >= SystemInformationService.CurrentBankDay &&
                         e.Amount > 0).ToArray();
             foreach (var credit in credits)
             {
@@ -132,42 +146,66 @@ namespace BL.Services.Credit
         private void CommitPercents(ORMLibrary.Credit credit)
         {
             decimal percentAmount;
+
             if (credit.PlanOfCredit.Anuity)
             {
-                percentAmount = credit.Amount/(credit.EndDate - credit.StartDate) +
+                percentAmount = credit.Amount/(decimal)(credit.EndDate - credit.StartDate).TotalDays +
                                 credit.Amount*(decimal) credit.PlanOfCredit.Percent/100/
-                                CommonService.YearLength;
+                                SystemInformationService.CountDaysInYear;
             }
             else
             {
                 percentAmount = credit.Amount*(decimal) credit.PlanOfCredit.Percent/100/
-                                CommonService.YearLength;
+                                SystemInformationService.CountDaysInYear;
             }
-            TransactionService.CommitTransaction(credit.PercentAccount, AccountService.GetDevelopmentFundAccount(),
-                percentAmount);
+
+            TransactionService.CommitTransaction(
+                credit.PercentAccount, 
+                AccountService.GetDevelopmentFundAccount(),
+                percentAmount
+            );
         }
 
         public void CloseCredit(int id)
         {
             var credit = Context.Credits.FirstOrDefault(e => e.Id == id);
-            if (credit.EndDate > CommonService.CurrentBankDay)
+
+            if (credit.EndDate > SystemInformationService.CurrentBankDay)
+            {
                 throw new SystemException("Cannot close credit before credit term ended.");
+            }
 
             if (credit.Amount == 0)
+            {
                 throw new SystemException("Credit already have been closed.");
+            }
 
             if (!credit.PlanOfCredit.Anuity)
             {
-                TransactionService.CommitCashDeskDebitTransaction(credit.Amount);
-                TransactionService.CommitTransaction(AccountService.GetCashDeskAccount(), credit.MainAccount,
-                    credit.Amount);
-                TransactionService.CommitTransaction(credit.MainAccount, AccountService.GetDevelopmentFundAccount(),
-                    credit.Amount);
+                TransactionService.CommitCashDeskDebitTransaction(
+                    credit.Amount
+                );
+
+                TransactionService.CommitTransaction(
+                    AccountService.GetCashDeskAccount(), 
+                    credit.MainAccount,
+                    credit.Amount
+                );
+
+                TransactionService.CommitTransaction(
+                    credit.MainAccount, 
+                    AccountService.GetDevelopmentFundAccount(),
+                    credit.Amount
+                );
             }
 
             TransactionService.CommitCashDeskDebitTransaction(credit.PercentAccount.Balance);
-            TransactionService.CommitTransaction(AccountService.GetCashDeskAccount(), credit.PercentAccount,
-                credit.PercentAccount.Balance);
+
+            TransactionService.CommitTransaction(
+                AccountService.GetCashDeskAccount(),
+                credit.PercentAccount,
+                credit.PercentAccount.Balance
+            );
 
             credit.Amount = 0;
 
@@ -177,26 +215,39 @@ namespace BL.Services.Credit
         public void PayPercents(int id)
         {
             var credit = Context.Credits.FirstOrDefault(e => e.Id == id);
+
             if (credit.Amount == 0)
             {
                 throw new ServiceException("Cannot pay percents for closed credit.");
             }
 
             var amount = Math.Abs(credit.PercentAccount.Balance);
+
             TransactionService.WithDrawCashDeskTransaction(amount);
-            TransactionService.CommitTransaction(AccountService.GetCashDeskAccount(), credit.PercentAccount, amount);
+
+            TransactionService.CommitTransaction(
+                AccountService.GetCashDeskAccount(), 
+                credit.PercentAccount, 
+                amount
+            );
         }
 
         private void TakeMoneyForCredit(ORMLibrary.Credit dbCredit)
         {
-            TransactionService.CommitTransaction(AccountService.GetDevelopmentFundAccount(), dbCredit.MainAccount,
-                dbCredit.Amount);           
+            TransactionService.CommitTransaction(
+                AccountService.GetDevelopmentFundAccount(), 
+                dbCredit.MainAccount,
+                dbCredit.Amount
+            );           
         }
 
         private void WithDrawCreditFromCashDesk(ORMLibrary.Credit dbCredit)
         {
-            TransactionService.CommitTransaction(dbCredit.MainAccount, AccountService.GetCashDeskAccount(),
-                dbCredit.Amount);
+            TransactionService.CommitTransaction(
+                dbCredit.MainAccount, 
+                AccountService.GetCashDeskAccount(),
+                dbCredit.Amount
+            );
             TransactionService.WithDrawCashDeskTransaction(dbCredit.Amount);
         }
     }

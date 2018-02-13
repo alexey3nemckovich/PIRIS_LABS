@@ -1,10 +1,7 @@
 namespace ORMLibrary
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Transaction")]
     public partial class Transaction
@@ -18,7 +15,8 @@ namespace ORMLibrary
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }
 
-        public int TransactionDay { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime TransactionDay { get; set; }
 
         public virtual Account DebetAccount { get; set; }
 

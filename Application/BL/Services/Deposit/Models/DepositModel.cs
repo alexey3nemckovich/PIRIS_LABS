@@ -14,8 +14,8 @@ namespace BL.Services.Deposit.Models
         public int Id { get; set; }
         public int ClientId { get; set; }
         public int PlanId { get; set; }
-        public int StartDate { get; set; }
-        public int EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int MainAccountId { get; set; }
         public int PercentAccountId { get; set; }
         public decimal Amount { get; set; }

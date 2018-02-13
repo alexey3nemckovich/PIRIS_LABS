@@ -72,8 +72,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Account\Models\AccountNotFoundException.cs" />
     <Compile Include="Services\Common\BankService.cs" />
-    <Compile Include="Services\Common\ICommonService.cs" />
+    <Compile Include="Services\Common\ISystemInformationService.cs" />
     <Compile Include="Services\Common\Model\AccountReportModel.cs" />
+    <Compile Include="Services\Common\Model\SystemInformationModel.cs" />
     <Compile Include="Services\Common\Model\TransactionReportModel.cs" />
     <Compile Include="Services\Credit\IPlanOfCreditService.cs" />
     <Compile Include="Services\Credit\Models\PlanOfPaymentModel.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="Services\Client\Models\MaritalStatusModel.cs" />
     <Compile Include="Services\Client\Models\TownModel.cs" />
     <Compile Include="Services\Client\Models\ValidationException.cs" />
-    <Compile Include="Services\Common\CommonService.cs" />
+    <Compile Include="Services\Common\SystemInformationService.cs" />
     <Compile Include="Services\Common\IBankService.cs" />
     <Compile Include="Services\Common\Model\ServiceException.cs" />
     <Compile Include="Services\Credit\CreditService.cs" />

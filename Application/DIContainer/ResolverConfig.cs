@@ -44,7 +44,7 @@ namespace DIContainer
             kernel.RegisterType<IAccountService, AccountService>();           
             kernel.RegisterType<IAtmService, AtmService>();
             kernel.RegisterType<IBankService, BankService>();
-            kernel.RegisterType<ICommonService, CommonService>();
+            kernel.RegisterType<ISystemInformationService, SystemInformationService>();
             kernel.RegisterType<ICreditService, CreditService>();
             kernel.RegisterType<IPlanOfCreditService, PlanOfCreditService>();
             kernel.RegisterType<IDepositService, DepositService>();

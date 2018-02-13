@@ -1,1 +1,1 @@
-﻿INSERT INTO Client VALUES('Surname','Name','FatherName','BirthDate','Male','PassportSeries','PassportNumber','Issued','IssuedDate','IdNumber','BirthPlace','ResidentialPlace','Address','HomeNumber','MobileNumber','Email','Address','Martial','Citizenship','Disability','Pencioner','Income')
+﻿INSERT INTO Client VALUES('Surname','Name','Patronymic','BirthDate','Male','PassportSeries','PassportNumber','Issued','IssuedDate','IdNumber','BirthPlace','ResidentialPlace','Address','HomeNumber','MobileNumber','Email','Address','Martial','Citizenship','Disability','Pencioner','Income')
