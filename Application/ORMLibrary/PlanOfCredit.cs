@@ -19,7 +19,7 @@ namespace ORMLibrary
         [StringLength(50)]
         public string Name { get; set; }
 
-        [Column("Month period")]
+        [Column("Time period(in monthes)")]
         public int MonthesPeriod { get; set; }
 
         public double Percent { get; set; }

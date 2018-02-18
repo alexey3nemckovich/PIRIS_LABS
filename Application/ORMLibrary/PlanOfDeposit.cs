@@ -20,7 +20,7 @@ namespace ORMLibrary
         public string Name { get; set; }
 
         [Column("Month period")]
-        public int MonthesPeriod { get; set; }
+        public int Period { get; set; }
 
         public double Percent { get; set; }
 

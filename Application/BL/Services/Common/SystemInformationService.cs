@@ -10,6 +10,8 @@ namespace BL.Services.Common
 
         public int CountDaysInYear { get; } = 365;
 
+        public int CountMonthesInYear { get; } = 12;
+
         public DateTime CurrentBankDay
         {
             get

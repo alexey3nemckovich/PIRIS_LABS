@@ -45,7 +45,7 @@ namespace BL.Services.Credit
             dbCredit.Client = Context.Clients.FirstOrDefault(e => e.Id == credit.ClientId);
             AccountService.CreateAccountsForCredit(dbCredit);
             dbCredit.StartDate = SystemInformationService.CurrentBankDay;
-            dbCredit.EndDate = dbCredit.StartDate.AddDays(dbCredit.PlanOfCredit.MonthesPeriod);
+            dbCredit.EndDate = dbCredit.StartDate.AddMonths(dbCredit.PlanOfCredit.MonthesPeriod);
             dbCredit.Amount = credit.Amount;
 
             if (isCardNeeded)
@@ -95,19 +95,19 @@ namespace BL.Services.Credit
             result.CurrentDay = SystemInformationService.CurrentBankDay;
             result.PaymentSchedule = new Dictionary<DateTime, double>();
 
-            int countMonthes = (int)(credit.EndDate - credit.StartDate).TotalDays / SystemInformationService.CountDaysInMonth;
-            double percentPerMonth = credit.PlanOfCredit.Percent / SystemInformationService.CountDaysInYear;
+            int countMonthes = credit.PlanOfCredit.MonthesPeriod;
+            double percentPerMonth = credit.PlanOfCredit.Percent / SystemInformationService.CountMonthesInYear;
 
             if (credit.PlanOfCredit.Anuity)
             {
-                double anuityCoefficient = 
-                    (percentPerMonth * Math.Pow(1 + percentPerMonth, countMonthes)) / 
+                double anuityCoefficient =
+                    (percentPerMonth * Math.Pow(1 + percentPerMonth, countMonthes)) /
                     (Math.Pow(1 + percentPerMonth, countMonthes) - 1);
 
                 double paymentPerMonth = anuityCoefficient * (double)credit.Amount;
 
                 DateTime paymentDate = credit.StartDate.AddMonths(1);
-                for(int i = 0; i < countMonthes; i++)
+                for (int i = 0; i < countMonthes; i++)
                 {
                     result.PaymentSchedule.Add(paymentDate, paymentPerMonth);
                     paymentDate.AddMonths(1);

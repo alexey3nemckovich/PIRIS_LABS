@@ -13,8 +13,8 @@ namespace WebApplication.Models.ViewModels
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Time period(in monthes)")]
-        public int MonthesPeriod { get; set; }
+        [Display(Name = "Time period(in days)")]
+        public int Period { get; set; }
 
         [Required]
         [Display(Name = "Percent a year")]

@@ -41,7 +41,7 @@ namespace BL.Services.Deposit
             dbDeposit.Client = Context.Clients.FirstOrDefault(e => e.Id == deposit.ClientId);
             AccountService.CreateAccountsForDeposit(dbDeposit);
             dbDeposit.StartDate = SystemInformationService.CurrentBankDay;
-            dbDeposit.EndDate = dbDeposit.StartDate.AddDays(dbDeposit.PlanOfDeposit.MonthesPeriod);
+            dbDeposit.EndDate = dbDeposit.StartDate.AddDays(dbDeposit.PlanOfDeposit.Period);
             dbDeposit.Amount = deposit.Amount;
 
             Context.Deposits.Add(dbDeposit);

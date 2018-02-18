@@ -6,6 +6,7 @@ namespace BL.Services.Common
     {
         int CountDaysInMonth { get; }
         int CountDaysInYear { get; }
+        int CountMonthesInYear { get; }
 
         void IncreaseCurrentBankDay();
         DateTime CurrentBankDay { get; }
