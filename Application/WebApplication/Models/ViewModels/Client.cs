@@ -24,6 +24,7 @@ namespace WebApplication.Models.ViewModels
 
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
 
         [Required]    
@@ -42,6 +43,7 @@ namespace WebApplication.Models.ViewModels
 
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime IssueDate { get; set; }
 
         [Required]

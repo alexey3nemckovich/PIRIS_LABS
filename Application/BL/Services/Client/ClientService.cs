@@ -77,15 +77,22 @@ namespace BL.Services.Client
         {
             try
             {
-                var dbClient = Context.Clients.FirstOrDefault(e => e.Id == client.Id);
-                if (dbClient == null)
+                var dbClient = Context.Clients.Where(e => e.Id == client.Id).FirstOrDefault();
+
+                if (null == dbClient)
+                {
                     throw new ServiceException("User not found.");
-                dbClient = Mapper.Map<ClientModel, ORMLibrary.Client>(client);
+                }
+
+                Mapper.Map(client, dbClient);
+
                 dbClient.Disability = Context.Disabilities.First(e => e.Id == client.Disability.Id);
                 dbClient.Town = Context.Towns.First(e => e.Id == client.Town.Id);
                 dbClient.MartialStatus = Context.MartialStatus.First(e => e.Id == client.MartialStatus.Id);
                 dbClient.Citizenship = Context.Citizenships.First(e => e.Id == client.Citizenship.Id);
+
                 Context.Entry(dbClient).State = EntityState.Modified;
+                Context.SaveChanges();
             }
             catch (ServiceException)
             {

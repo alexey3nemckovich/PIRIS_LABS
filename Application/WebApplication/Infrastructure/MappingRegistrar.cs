@@ -78,6 +78,8 @@ namespace WebApplication.Infrastructure
                 .ForMember(r => r.ResidenceActualPlace, r => r.MapFrom(t => t.Town.Name))
                 .ForMember(r => r.DisabilityStatuses,
                     r => r.MapFrom(t => clientService.GetDisabilities().Select(y => y.Status)))
+                .ForMember(r => r.Gender,
+                    r => r.MapFrom(t => t.Male))
                 .ForMember(r => r.Citizenships,
                     r => r.MapFrom(t => clientService.GetCitizenships().Select(y => y.Country)))
                 .ForMember(r => r.Towns,
@@ -100,6 +102,10 @@ namespace WebApplication.Infrastructure
                         r =>
                             r.MapFrom(
                                 t => clientService.GetTowns().FirstOrDefault(y => y.Name == t.ResidenceActualPlace)))
+                    .ForMember(r => r.Male,
+                        r =>
+                            r.MapFrom(
+                                t => t.Gender))
                     .ForMember(r => r.Citizenship,
                         r =>
                             r.MapFrom(
