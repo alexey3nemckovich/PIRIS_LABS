@@ -110,7 +110,8 @@ namespace BL.Services.Credit
                 for (int i = 0; i < countMonthes; i++)
                 {
                     result.PaymentSchedule.Add(paymentDate, paymentPerMonth);
-                    paymentDate.AddMonths(1);
+
+                    paymentDate = paymentDate.AddMonths(1);
                 }
             }
             else
@@ -123,7 +124,9 @@ namespace BL.Services.Credit
                 {
                     double thisMonthPayment = monthlyReturningCreditBodyPart + creditRest * percentPerMonth;
                     result.PaymentSchedule.Add(paymentDate, thisMonthPayment);
+
                     creditRest -= monthlyReturningCreditBodyPart;
+                    paymentDate = paymentDate.AddMonths(1);
                 }
             }
 
