@@ -14,7 +14,7 @@ namespace WebApplication.Models.ViewModels
 
         [Required]
         [Display(Name = "Time period(in days)")]
-        public int Period { get; set; }
+        public int DayPeriod { get; set; }
 
         [Required]
         [Display(Name = "Percent a year")]

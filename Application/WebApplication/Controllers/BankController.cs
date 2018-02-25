@@ -51,6 +51,7 @@ namespace WebApplication.Controllers
         {
             //var report = BankService.GenerateTransactionReport(SystemInformationService.CurrentBankDay);
             BL.Services.Common.Model.TransactionReportModel report = new BL.Services.Common.Model.TransactionReportModel();
+            
             return View("TransactionReport", report);
         }
 

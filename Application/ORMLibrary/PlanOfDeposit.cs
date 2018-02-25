@@ -19,8 +19,8 @@ namespace ORMLibrary
         [StringLength(50)]
         public string Name { get; set; }
 
-        [Column("Month period")]
-        public int Period { get; set; }
+        [Column("Day period")]
+        public int DayPeriod { get; set; }
 
         public double Percent { get; set; }
 

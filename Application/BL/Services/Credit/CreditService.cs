@@ -146,17 +146,32 @@ namespace BL.Services.Credit
         private void CommitPercents(ORMLibrary.Credit credit)
         {
             decimal percentAmount;
+            int countMonthes = credit.PlanOfCredit.MonthPeriod;
+            double percentPerMonth = credit.PlanOfCredit.Percent / SystemInformationService.CountMonthesInYear;
 
             if (credit.PlanOfCredit.Anuity)
             {
-                percentAmount = credit.Amount/(decimal)(credit.EndDate - credit.StartDate).TotalDays +
-                                credit.Amount*(decimal) credit.PlanOfCredit.Percent/100/
-                                SystemInformationService.CountDaysInYear;
+                double anuityCoefficient =
+                    (percentPerMonth * Math.Pow(1 + percentPerMonth, countMonthes)) /
+                    (Math.Pow(1 + percentPerMonth, countMonthes) - 1);
+
+                double paymentPerMonth = anuityCoefficient * (double)credit.Amount;
+
+                percentAmount = (decimal)paymentPerMonth / SystemInformationService.CountDaysInMonth;
             }
             else
             {
-                percentAmount = credit.Amount*(decimal) credit.PlanOfCredit.Percent/100/
-                                SystemInformationService.CountDaysInYear;
+                double creditRest = (double)credit.Amount;
+                double dayReturningCreditBodyPart = (double)credit.Amount / countMonthes / SystemInformationService.CountDaysInMonth;
+                double percentPerDay = percentPerMonth / SystemInformationService.CountDaysInMonth;
+
+                for (int i = 0; i < (SystemInformationService.CurrentBankDay - credit.StartDate).TotalDays; i++)
+                {
+                    double thisDayPayment = dayReturningCreditBodyPart + creditRest * percentPerDay;
+                    creditRest -= dayReturningCreditBodyPart;
+                }
+
+                percentAmount = (decimal)(dayReturningCreditBodyPart + creditRest * percentPerDay);
             }
 
             TransactionService.CommitTransaction(

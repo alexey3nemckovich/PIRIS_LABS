@@ -31,7 +31,7 @@
     </div>
     <div class="col-md-4">
         <h2>Transfer money</h2>
-        @using (Html.BeginForm("WithdrawMoney", "Atm"))
+        @using (Html.BeginForm("TransferMoney", "Atm"))
         {
             @Html.Hidden("creditId", Model.CreditId)
             <div class="form-group">
